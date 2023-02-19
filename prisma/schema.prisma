@@ -1,0 +1,38 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// For Relations look at: https://www.prisma.io/docs/concepts/components/prisma-schema/relations
+
+generator client {
+  provider      = "prisma-client-js"
+  // Todo add binaryTarget for target server
+  binaryTargets = ["native"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int        @id @default(autoincrement())
+  name     String     @unique
+  password String
+  category Category[]
+}
+
+model Category {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  budget    Int
+  spendings Spending[]
+  user      User?      @relation(fields: [user_id], references: [id])
+  user_id   Int?
+}
+
+model Spending {
+  id         Int       @id @default(autoincrement())
+  name       String
+  amount     Float
+  category   Category? @relation(fields: [categoryId], references: [id])
+  categoryId Int?
+}

@@ -1,0 +1,38 @@
+version: '3.1'
+
+services:
+  db:
+    container_name: mysql_db
+    image: mysql:latest
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=example
+      - MYSQL_DATABASE=tracey
+    networks:
+      - backend_network
+    ports:
+      - '3306:3306'
+    volumes:
+      # writes data to data directory on local machine 
+      - './data:/var/lib/mysql'
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 10s
+      retries: 2
+
+  backend_server:
+    container_name: tracey_backend
+    image: ${image}
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    ports: 
+      # port to use. first number is port on machine, second in container
+      - '6060:6060'
+    networks:
+      - backend_network
+
+networks:
+  backend_network:
