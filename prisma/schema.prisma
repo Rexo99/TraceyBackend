@@ -21,15 +21,15 @@ model User {
 }
 
 model Category {
-  id        Int        @id @default(autoincrement())
-  name      String     @unique
-  budget    Int
-  spendings Spending[]
-  user      User?      @relation(fields: [user_id], references: [id])
-  user_id   Int?
+  id          Int           @id @default(autoincrement())
+  name        String        @unique
+  budget      Int
+  expenditure Expenditure[]
+  user        User?         @relation(fields: [user_id], references: [id])
+  user_id     Int?
 }
 
-model Spending {
+model Expenditure {
   id         Int       @id @default(autoincrement())
   name       String
   amount     Float

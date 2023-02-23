@@ -1,6 +1,13 @@
 import {connection} from "../client";
 import {NextFunction, Request, Response} from 'express';
 
+const getAllCategories = async (req: Request, res: Response, next: NextFunction) => {
+    let response = await connection.category.findMany();
+    return res.status(200).json({
+        message: response
+    });
+}
+
 const getCategory = async (req: Request, res: Response, next: NextFunction) => {
     let name: string = req.params.name
     let response = await connection.category.findUnique({where: {name: name}});
@@ -14,13 +21,14 @@ const createCategory = async (req: Request, res: Response, next: NextFunction) =
     let budget: number = req.body.budget;
     try {
         let response = await connection.category.create({
-                data: {
-                    name: name,
-                    budget: budget,
-                    spendings: {}
-                }
+            data:{
+                name: name,
+                budget: budget,
+                expenditure: {}
             }
-        )
+        })
+
+
         return res.status(200).json({
             message: response
         });
@@ -73,4 +81,4 @@ const deleteCategory = async (req: Request, res: Response, next: NextFunction) =
     }
 }
 
-export default {getCategory, createCategory, updateCategory, deleteCategory};
+export default {getAllCategories,getCategory, createCategory, updateCategory, deleteCategory};
