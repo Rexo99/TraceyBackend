@@ -5,6 +5,7 @@ services:
     container_name: mysql_db
     image: mysql:latest
     restart: unless-stopped
+    #Todo change for production
     environment:
       - MYSQL_ROOT_PASSWORD=example
       - MYSQL_DATABASE=tracey
@@ -12,9 +13,11 @@ services:
       - backend_network
     ports:
       - '3306:3306'
-    volumes:
+
+    #Todo change for production
+    #volumes:
       # writes data to data directory on local machine 
-      - './data:/var/lib/mysql'
+    # - './data:/var/lib/mysql'
     healthcheck:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
       interval: 10s

@@ -5,9 +5,8 @@ require('jsonwebtoken');
 export let secret: Secret = "default"
 if (process.env.secret) {
     secret = process.env.secret
-    console.log(secret + "-------------")
 } else {
-    throw new Error("WHATEVER environment variable is not set")
+    throw new Error("environment variable is not set")
 }
 
 export interface CustomRequest extends Request {

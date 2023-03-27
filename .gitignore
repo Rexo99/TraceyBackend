@@ -3,3 +3,5 @@
 /.env
 /data/
 /.env.dev
+/src/certs/mykey.pem
+/src/certs/private.pem
