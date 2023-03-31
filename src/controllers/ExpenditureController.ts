@@ -44,11 +44,13 @@ const createExpenditure = async (req: Request, res: Response, next: NextFunction
     let name: string = req.body.name;
     let amount: number = req.body.amount;
     let categoryId: number = req.body.categoryId;
+    let dateTime: string = req.body.dateTime;
     try {
         let response = await connection.expenditure.create({
             data: {
                 name: name,
                 amount: amount,
+                dateTime: dateTime,
                 category: {
                     connect: {
                         id: categoryId

@@ -26,8 +26,7 @@ services:
 
   backend_server:
     container_name: tracey_backend
-    image: ${image}
-    build: .
+    image: rexo99/tracey:latest
     depends_on:
       db:
         condition: service_healthy

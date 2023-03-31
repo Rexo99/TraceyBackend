@@ -6,7 +6,7 @@ import {Request, Response} from 'express';
 const login = async (req: Request, res: Response) => {
     try {
         const foundUser = await userServices.login(req.body);
-        res.status(200).send(foundUser);
+        res.status(200).send(foundUser.token);
     } catch (error) {
         return res.status(500).send(getErrorMessage(error));
     }
