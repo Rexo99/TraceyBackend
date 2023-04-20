@@ -27,7 +27,7 @@ router.use((req, res, next) => {
 });
 
 /** Routes */
-router.use('/', routes);
+router.use('/api', routes);
 
 /** Error handling */
 router.use((req, res, next) => {

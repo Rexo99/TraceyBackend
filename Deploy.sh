@@ -17,7 +17,7 @@ if [ "$destination" -eq 2 ]; then
   docker --context remote compose --env-file ./.env.dev up -d
   docker --context remote ps
 else
-    docker build -t "${image}" .
+  docker build -t "${image}" .
   docker compose down --rmi local
   docker compose --env-file .env.dev up -d
   docker ps

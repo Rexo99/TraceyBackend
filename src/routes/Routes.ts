@@ -21,4 +21,5 @@ router.delete('/users/:userid/expenditures/:id',auth,expenditureController.delet
 
 router.post('/login', userController.login)
 router.post('/register', userController.register)
+router.get('/',userController.ping)
 export = router;

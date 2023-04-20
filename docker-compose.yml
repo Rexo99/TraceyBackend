@@ -13,7 +13,6 @@ services:
       - backend_network
     ports:
       - '3306:3306'
-
     #Todo change for production
     #volumes:
       # writes data to data directory on local machine 
@@ -35,6 +34,9 @@ services:
       - '6060:6060'
     networks:
       - backend_network
+      - swag_network
 
 networks:
   backend_network:
+  swag_network:
+    name: swag_network
