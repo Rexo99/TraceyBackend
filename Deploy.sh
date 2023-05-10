@@ -14,12 +14,12 @@ if [ "$destination" -eq 2 ]; then
   docker push $image;
   docker --context remote compose down --rmi local
   # docker --context remote compose --env-file ./.env.prod up -d
-  docker --context remote compose --env-file ./.env.dev up -d
+  docker --context remote compose up -d
   docker --context remote ps
 else
   docker build -t "${image}" .
   docker compose down --rmi local
-  docker compose --env-file .env.dev up -d
+  docker compose up -d
   docker ps
 fi
 
