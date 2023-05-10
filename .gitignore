@@ -5,3 +5,4 @@
 /.env.dev
 /src/certs/mykey.pem
 /src/certs/private.pem
+/prisma/.env
