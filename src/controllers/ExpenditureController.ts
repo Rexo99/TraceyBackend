@@ -45,7 +45,26 @@ const createExpenditure = async (req: Request, res: Response, next: NextFunction
     let amount: number = req.body.amount;
     let categoryId: number = req.body.categoryId;
     let dateTime: string = req.body.dateTime;
+
+    // If date is empty use current date
+    if (!dateTime)
+    {
+        dateTime = new Date().toISOString();
+    }
+
     try {
+        // Check if category exist if not throw error
+        let tempCategory = await connection.category.findFirst({
+            where: {id: categoryId}
+        });
+
+        if (!tempCategory)
+        {
+            return res.status(409).json({
+                message: "Category with Id: " + categoryId + " does not exists"
+            });
+        }
+
         let response = await connection.expenditure.create({
             data: {
                 name: name,
@@ -64,7 +83,7 @@ const createExpenditure = async (req: Request, res: Response, next: NextFunction
         });
     } catch (handleRequestError) {
         return res.status(409).json({
-            message: "Category with Id: " + categoryId + " does not exists"
+            message: "error"
         });
     }
 }
