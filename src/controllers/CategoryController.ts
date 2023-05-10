@@ -40,25 +40,37 @@ const getCategory = async (req: Request, res: Response, next: NextFunction) => {
 
 const createCategory = async (req: Request, res: Response, next: NextFunction) => {
     let name: string = req.body.name;
-    let budget: number = req.body.budget;
+    let budget: string = req.body.budget;
     let userId: string = req.params.userid;
+
     try {
+        // Check if category with name already exist in db
+        let tempCategory = await connection.category.findFirst({
+            where: {name: name}
+        });
+
+        if (tempCategory)
+        {
+            return res.status(403).json({
+                message: "Category already exist"
+            });
+        }
+
         let response = await connection.category.create({
             data: {
                 name: name,
-                budget: budget,
+                budget: parseInt(budget),
                 expenditure: {},
                 user_id: parseInt(userId)
             }
         })
-
 
         return res.status(200).json({
             message: response
         });
     } catch (handleRequestError) {
         return res.status(409).json({
-            message: "Category already exists"
+            message: "error"
         });
     }
 }
