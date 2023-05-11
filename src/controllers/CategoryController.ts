@@ -118,18 +118,19 @@ const deleteCategory = async (req: Request, res: Response, next: NextFunction) =
 }
 
 const getAllExpendituresByCategory = async (req: Request, res: Response, next: NextFunction) => {
-    //Todo dont reply
     let categoryId: string = req.params.id;
+
     try {
         // find all expenditures by categoryId
-        console.log("moin");
         let response = await connection.expenditure.findMany({
             where: {
                 categoryId: parseInt(categoryId)
             }
         });
 
-        return response;
+        return res.status(200).json({
+            message: response
+        });
     } catch (e) {
         return res.status(404).json({
             message: "Category does not exists"
