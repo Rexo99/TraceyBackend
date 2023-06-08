@@ -22,7 +22,7 @@ model User {
 
 model Category {
   id          Int           @id @default(autoincrement())
-  name        String        @unique
+  name        String
   budget      Int
   expenditure Expenditure[]
   user        User?         @relation(fields: [user_id], references: [id])

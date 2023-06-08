@@ -17,7 +17,7 @@ const register = async (req: Request, res: Response) => {
         await userServices.register(req.body);
         res.status(200).send('Registration successful');
     } catch (error) {
-        return res.status(500).send(getErrorMessage(error));
+        return res.status(500).send("User already exists");
     }
 };
 

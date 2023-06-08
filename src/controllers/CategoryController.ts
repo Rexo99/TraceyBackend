@@ -116,8 +116,9 @@ const getAllExpendituresByCategory = async (req: Request, res: Response, next: N
                 categoryId: parseInt(categoryId)
             }
         });
-
-        return response;
+        return res.status(200).json({
+            message: response
+        });
     } catch (e) {
         return res.status(404).json({
             message: "Category does not exists"
