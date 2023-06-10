@@ -12,6 +12,7 @@ services:
     networks:
       - backend_network
     ports:
+    # port to use. first number is port on machine, second in container
       - '3306:3306'
     #Todo change for production
     #volumes:
@@ -29,9 +30,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    ports: 
-      # port to use. first number is port on machine, second in container
-      - '6060:6060'
     networks:
       - backend_network
       - swag_network

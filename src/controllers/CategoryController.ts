@@ -1,5 +1,6 @@
 import {connection} from "../client";
 import {NextFunction, Request, response, Response} from 'express';
+import {getErrorMessage} from "../utils/errors";
 
 const getAllCategoriesByUser = async (req: Request, res: Response, next: NextFunction) => {
     let userId: string = req.params.userid;
@@ -58,7 +59,7 @@ const createCategory = async (req: Request, res: Response, next: NextFunction) =
         });
     } catch (handleRequestError) {
         return res.status(409).json({
-            message: "Category already exists"
+            message: getErrorMessage(handleRequestError)
         });
     }
 }
