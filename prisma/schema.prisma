@@ -27,6 +27,7 @@ model Category {
   expenditure Expenditure[]
   user        User?         @relation(fields: [user_id], references: [id])
   user_id     Int?
+  icon        String
 }
 
 model Expenditure {

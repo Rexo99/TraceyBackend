@@ -33,8 +33,10 @@ services:
     networks:
       - backend_network
       - swag_network
+    ports:
+      # port to use. first number is port on machine, second in container
+      - '6060:6060'
 
 networks:
   backend_network:
   swag_network:
-    name: swag_network

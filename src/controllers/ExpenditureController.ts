@@ -25,7 +25,7 @@ const getAllExpendituresByUser = async (req: Request, res: Response, next: NextF
 const getExpenditure = async (req: Request, res: Response, next: NextFunction) => {
     let id: string = req.params.id
     try {
-        let response = await connection.expenditure.findUnique({
+        let response = await connection.expenditure.findUniqueOrThrow({
             where: {
                 id: parseInt(id)
             }
@@ -108,7 +108,7 @@ const deleteExpenditure = async (req: Request, res: Response, next: NextFunction
             }
         })
         return res.status(200).json({
-            message: response
+            message: "Expenditure deleted successfully"
         });
     } catch (handleRequestError) {
         return res.status(404).json({

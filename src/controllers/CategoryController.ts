@@ -24,7 +24,7 @@ const getAllCategoriesByUser = async (req: Request, res: Response, next: NextFun
 const getCategory = async (req: Request, res: Response, next: NextFunction) => {
     let id: string = req.params.id;
     try {
-        let response = await connection.category.findUnique({
+        let response = await connection.category.findUniqueOrThrow({
             where: {
                 id: parseInt(id)
             },
@@ -43,17 +43,17 @@ const createCategory = async (req: Request, res: Response, next: NextFunction) =
     let name: string = req.body.name;
     let budget: number = req.body.budget;
     let userId: string = req.params.userid;
+    let icon: string = req.body.icon;
     try {
         let response = await connection.category.create({
             data: {
                 name: name,
                 budget: budget,
                 expenditure: {},
-                user_id: parseInt(userId)
+                user_id: parseInt(userId),
+                icon: icon,
             }
         })
-
-
         return res.status(200).json({
             message: response
         });
@@ -68,6 +68,7 @@ const updateCategory = async (req: Request, res: Response, next: NextFunction) =
     let id: string = req.params.id;
     let name: string = req.body.name;
     let budget: number = req.body.budget;
+    let icon: string = req.body.icon;
     try {
         let response = await connection.category.update({
             where: {
@@ -75,7 +76,8 @@ const updateCategory = async (req: Request, res: Response, next: NextFunction) =
             },
             data: {
                 name: name,
-                budget: budget
+                budget: budget,
+                icon: icon
             }
         })
         return res.status(200).json({
