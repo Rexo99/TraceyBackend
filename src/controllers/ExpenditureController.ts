@@ -45,6 +45,7 @@ const createExpenditure = async (req: Request, res: Response, next: NextFunction
     let amount: number = req.body.amount;
     let categoryId: number = req.body.categoryId;
     let dateTime: string = req.body.dateTime;
+    let image: string = req.body.image;
 
     // If date is empty use current date
     if (!dateTime)
@@ -70,6 +71,7 @@ const createExpenditure = async (req: Request, res: Response, next: NextFunction
                 name: name,
                 amount: amount,
                 dateTime: dateTime,
+                image: image,
                 category: {
                     connect: {
                         id: categoryId
@@ -93,6 +95,7 @@ const updateExpenditure = async (req: Request, res: Response, next: NextFunction
     let name: string = req.body.name;
     let amount: number = req.body.amount;
     let categoryId: number = req.body.categoryId;
+    let image: string = req.body.image;
     try {
         let response = await connection.expenditure.update({
             where: {
@@ -101,6 +104,7 @@ const updateExpenditure = async (req: Request, res: Response, next: NextFunction
             data: {
                 name: name,
                 amount: amount,
+                image: image,
                 category: {
                     connect: {
                         id: categoryId
