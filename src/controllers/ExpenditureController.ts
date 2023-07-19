@@ -45,14 +45,13 @@ const createExpenditure = async (req: Request, res: Response, next: NextFunction
     let amount: number = req.body.amount;
     let categoryId: number = req.body.categoryId;
     let dateTime: string = req.body.dateTime;
-    let image: string = req.body.image;
+    let image = Buffer.from(req.body.image);
 
     // If date is empty use current date
     if (!dateTime)
     {
         dateTime = new Date().toISOString();
     }
-
     try {
         // Check if category exist if not throw error
         let tempCategory = await connection.category.findFirst({
@@ -85,7 +84,7 @@ const createExpenditure = async (req: Request, res: Response, next: NextFunction
         });
     } catch (handleRequestError) {
         return res.status(409).json({
-            message: "error"
+            message: "error" + handleRequestError
         });
     }
 }
@@ -95,7 +94,7 @@ const updateExpenditure = async (req: Request, res: Response, next: NextFunction
     let name: string = req.body.name;
     let amount: number = req.body.amount;
     let categoryId: number = req.body.categoryId;
-    let image: string = req.body.image;
+    let image = Buffer.from(req.body.image);
     try {
         let response = await connection.expenditure.update({
             where: {
