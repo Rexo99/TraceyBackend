@@ -37,5 +37,5 @@ model Expenditure {
   dateTime   String
   category   Category? @relation(fields: [categoryId], references: [id])
   categoryId Int?
-  image      String?
+  image      Bytes
 }
