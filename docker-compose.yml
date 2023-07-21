@@ -40,3 +40,4 @@ services:
 networks:
   backend_network:
   swag_network:
+    external: true
