@@ -45,14 +45,31 @@ const createExpenditure = async (req: Request, res: Response, next: NextFunction
     let amount: number = req.body.amount;
     let categoryId: number = req.body.categoryId;
     let dateTime: string = req.body.dateTime;
-    let image = Buffer.from(req.body.image);
+
+    // If date is empty use current date
+    if (!dateTime)
+    {
+        dateTime = new Date().toISOString();
+    }
+
     try {
+        // Check if category exist if not throw error
+        let tempCategory = await connection.category.findFirst({
+            where: {id: categoryId}
+        });
+
+        if (!tempCategory)
+        {
+            return res.status(409).json({
+                message: "Category with Id: " + categoryId + " does not exists"
+            });
+        }
+
         let response = await connection.expenditure.create({
             data: {
                 name: name,
                 amount: amount,
                 dateTime: dateTime,
-                image: image,
                 category: {
                     connect: {
                         id: categoryId
@@ -66,7 +83,7 @@ const createExpenditure = async (req: Request, res: Response, next: NextFunction
         });
     } catch (handleRequestError) {
         return res.status(409).json({
-            message: "Category with Id: " + categoryId + " does not exists" + handleRequestError
+            message: "error"
         });
     }
 }
@@ -76,7 +93,6 @@ const updateExpenditure = async (req: Request, res: Response, next: NextFunction
     let name: string = req.body.name;
     let amount: number = req.body.amount;
     let categoryId: number = req.body.categoryId;
-    let image = Buffer.from(req.body.image);
     try {
         let response = await connection.expenditure.update({
             where: {
@@ -85,7 +101,6 @@ const updateExpenditure = async (req: Request, res: Response, next: NextFunction
             data: {
                 name: name,
                 amount: amount,
-                image: image,
                 category: {
                     connect: {
                         id: categoryId
