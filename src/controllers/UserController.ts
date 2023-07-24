@@ -22,7 +22,7 @@ const register = async (req: Request, res: Response) => {
 };
 
 const ping = async (req: Request, res: Response) => {
-    return res.status(200).send("ping Version 1.1.0");
+    return res.status(200).send("ping Version 1.2.8");
 }
 
 
