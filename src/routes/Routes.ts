@@ -3,6 +3,7 @@ import categoryController from "../controllers/CategoryController";
 import expenditureController from "../controllers/ExpenditureController"
 import userController from "../controllers/UserController";
 import {auth} from "../middleware/auth";
+import multer from 'multer'
 
 const router = express.Router();
 
@@ -22,4 +23,7 @@ router.delete('/users/:userid/expenditures/:id',auth,expenditureController.delet
 router.post('/login', userController.login)
 router.post('/register', userController.register)
 router.get('/',userController.ping)
+
+let upload  = multer({ storage: multer.memoryStorage() });
+router.post('/testUpload', upload.single('image'), expenditureController.testUpload);
 export = router;
