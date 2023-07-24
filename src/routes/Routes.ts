@@ -26,4 +26,5 @@ router.get('/',userController.ping)
 
 let upload  = multer({ storage: multer.memoryStorage() });
 router.post('/testUpload', upload.single('image'), expenditureController.testUpload);
+router.get('/image/:id', upload.single('image'), expenditureController.getImageById);
 export = router;

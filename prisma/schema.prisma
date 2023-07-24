@@ -42,9 +42,8 @@ model Expenditure {
 }
 
 model Image {
-  id            Int           @id @default(autoincrement())
-  imageBytes    Bytes         @db.MediumBlob
-  hash          Int
-  expenditure   Expenditure[]
-  expenditureId Int?
+  id          Int           @id @default(autoincrement())
+  imageBytes  Bytes         @db.MediumBlob
+  hash        Int
+  expenditure Expenditure[]
 }
