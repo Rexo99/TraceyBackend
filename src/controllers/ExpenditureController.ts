@@ -46,90 +46,118 @@ const createExpenditure = async (req: Request, res: Response, next: NextFunction
     let amount: number = req.body.amount;
     let categoryId: number = req.body.categoryId;
     let dateTime: string = req.body.dateTime;
-    let imageId: number = req.body.imageId;
+    let imageId: number | null = req.body.imageId; // Make imageId nullable
 
-    // If date is empty use current date
-    if (!dateTime)
-    {
+
+    // If date is empty use the current date
+    if (!dateTime) {
         dateTime = new Date().toISOString();
     }
 
     try {
-        // Check if category exist if not throw error
+        // Check if the category exists; if not, throw an error
         let tempCategory = await connection.category.findFirst({
-            where: {id: categoryId}
+            where: { id: categoryId }
         });
 
-        if (!tempCategory)
-        {
+        if (!tempCategory) {
             return res.status(409).json({
-                message: "Category with Id: " + categoryId + " does not exists"
+                message: "Category with Id: " + categoryId + " does not exist"
             });
         }
 
-        let response = await connection.expenditure.create({
-            data: {
-                name: name,
-                amount: amount,
-                dateTime: dateTime,
-                category: {
-                    connect: {
-                        id: categoryId
-                    }
-                },
-                image: {
-                    connect: {
-                        id: imageId
-                    }
+        // Create the Expenditure record with optional image connection
+        let data: any = {
+            name: name,
+            amount: amount,
+            dateTime: dateTime,
+            category: {
+                connect: {
+                    id: categoryId
                 }
             }
-        })
+        };
+
+        // Add the image connection only if imageId is not null
+        if (imageId !== null) {
+            data.image = {
+                connect: {
+                    id: imageId
+                }
+            };
+        }
+
+        let response = await connection.expenditure.create({
+            data: data
+        });
 
         return res.status(200).json({
             message: response
         });
     } catch (handleRequestError) {
         return res.status(409).json({
-            message: "error"
+            message: "Error creating expenditure: " + handleRequestError
         });
     }
-}
+};
+
 
 const updateExpenditure = async (req: Request, res: Response, next: NextFunction) => {
     let id: string = req.params.id;
     let name: string = req.body.name;
     let amount: number = req.body.amount;
     let categoryId: number = req.body.categoryId;
-    let imageId: number = req.body.imageId;
+    let imageId: number | null = req.body.imageId; // Make imageId nullable
+
     try {
+        // Check if the category exists; if not, throw an error
+        let tempCategory = await connection.category.findFirst({
+            where: { id: categoryId }
+        });
+
+        if (!tempCategory) {
+            return res.status(409).json({
+                message: "Category with Id: " + categoryId + " does not exist"
+            });
+        }
+
+        // Update the Expenditure record with optional image connection
+        let data: any = {
+            name: name,
+            amount: amount,
+            category: {
+                connect: {
+                    id: categoryId
+                }
+            }
+        };
+
+        // Add the image connection only if imageId is not null
+        if (imageId !== null) {
+            data.image = {
+                connect: {
+                    id: imageId
+                }
+            };
+        }
+
         let response = await connection.expenditure.update({
             where: {
                 id: parseInt(id)
             },
-            data: {
-                name: name,
-                amount: amount,
-                category: {
-                    connect: {
-                        id: categoryId
-                    }
-                },
-                image: {
-                    connect: {
-                        id: imageId
-                    }
-                }
-            }
-        })
+            data: data
+        });
+
         return res.status(200).json({
             message: response
         });
     } catch (handleRequestError) {
         return res.status(404).json({
-            message: "Expenditure does not exists"
+            message: "Expenditure does not exist"
         });
     }
-}
+};
+
 
 const deleteExpenditure = async (req: Request, res: Response, next: NextFunction) => {
     let id: string = req.params.id;
