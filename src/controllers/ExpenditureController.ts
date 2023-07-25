@@ -22,6 +22,7 @@ const getAllExpendituresByUser = async (req: Request, res: Response, next: NextF
         });
     }
 }
+
 const getExpenditure = async (req: Request, res: Response, next: NextFunction) => {
     let id: string = req.params.id
     try {
@@ -45,6 +46,7 @@ const createExpenditure = async (req: Request, res: Response, next: NextFunction
     let amount: number = req.body.amount;
     let categoryId: number = req.body.categoryId;
     let dateTime: string = req.body.dateTime;
+    let imageId: number = req.body.imageId;
 
     // If date is empty use current date
     if (!dateTime)
@@ -74,6 +76,11 @@ const createExpenditure = async (req: Request, res: Response, next: NextFunction
                     connect: {
                         id: categoryId
                     }
+                },
+                image: {
+                    connect: {
+                        id: imageId
+                    }
                 }
             }
         })
@@ -93,6 +100,7 @@ const updateExpenditure = async (req: Request, res: Response, next: NextFunction
     let name: string = req.body.name;
     let amount: number = req.body.amount;
     let categoryId: number = req.body.categoryId;
+    let imageId: number = req.body.imageId;
     try {
         let response = await connection.expenditure.update({
             where: {
@@ -104,6 +112,11 @@ const updateExpenditure = async (req: Request, res: Response, next: NextFunction
                 category: {
                     connect: {
                         id: categoryId
+                    }
+                },
+                image: {
+                    connect: {
+                        id: imageId
                     }
                 }
             }
@@ -136,53 +149,10 @@ const deleteExpenditure = async (req: Request, res: Response, next: NextFunction
     }
 }
 
-const testUpload = async (req: Request, res: Response, next: NextFunction) => {
-    console.log("File" + req.file);
-    let image: Buffer = req.file!.buffer;
-    let hash: string = req.body.hash;
-
-    console.log(image + "------" + hash)
-    try {
-        let response = await connection.image.create({
-            data: {
-                imageBytes: image,
-                hash: parseInt(hash)
-            }
-        })
-        return res.status(200).json({
-            message: response
-        });
-    } catch (handleRequestError) {
-        return res.status(403).json({
-            message: "failed"
-        });
-    }
-}
-
-const getImageById = async (req: Request, res: Response, next: NextFunction) => {
-    let id: string = req.params.id
-    try {
-        let response = await connection.image.findUniqueOrThrow({
-            where: {
-                id: parseInt(id)
-            }
-        })
-        return res.status(200).json({
-            message: response
-        });
-    } catch (handleRequestError) {
-        return res.status(404).json({
-            message: "Expenditure does not exists"
-        });
-    }
-}
-
 export default {
     getExpenditure,
     createExpenditure,
     updateExpenditure,
     deleteExpenditure,
-    getAllExpendituresByUser,
-    testUpload,
-    getImageById
+    getAllExpendituresByUser
 };
