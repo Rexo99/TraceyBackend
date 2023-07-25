@@ -4,6 +4,7 @@ import expenditureController from "../controllers/ExpenditureController"
 import userController from "../controllers/UserController";
 import {auth} from "../middleware/auth";
 import multer from 'multer'
+import imageController from "../controllers/ImageController";
 
 const router = express.Router();
 
@@ -25,6 +26,6 @@ router.post('/register', userController.register)
 router.get('/',userController.ping)
 
 let upload  = multer({ storage: multer.memoryStorage() });
-router.post('/testUpload', upload.single('image'), expenditureController.testUpload);
-router.get('/image/:id', upload.single('image'), expenditureController.getImageById);
+router.post('/image', upload.single('image'), imageController.createImage);
+router.get('/image/:id', upload.single('image'), imageController.getImageById);
 export = router;
