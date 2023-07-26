@@ -8,9 +8,9 @@ const router: Express = express();
 /** Logging */
 router.use(morgan('dev'));
 /** Parse the request */
-router.use(express.urlencoded({ extended: false }));
+router.use(express.urlencoded({ extended: false, limit: '50mb' }));
 /** Takes care of JSON data */
-router.use(express.json());
+router.use(express.json({ limit: '50mb'}));
 
 /** RULES OF OUR API */
 router.use((req, res, next) => {
