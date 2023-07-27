@@ -32,12 +32,9 @@ services:
     networks:
       - backend_network
       - swag_network
-    ports:
-      # port to use. first number is port on machine, second in container
-      - '6060:6060'
 
 networks:
   backend_network:
   swag_network:
-    # Todo change for remote deployment
-    # external: true
+    #Todo server deployment
+    #external: true
